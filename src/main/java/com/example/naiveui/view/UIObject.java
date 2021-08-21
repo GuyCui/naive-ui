@@ -22,13 +22,20 @@ public abstract class UIObject extends Stage {
     }
 
     public void move() {
-        root.setOnMousePressed(event -> {xOffset = getX() - event.getScreenX();
+        root.setOnMousePressed(event -> {
+            xOffset = getX() - event.getScreenX();
             yOffset = getY()- event.getScreenY();
             root.setCursor(Cursor.CLOSED_HAND);
         });
-        root.setOnMouseDragged(event -> {setX(event.getScreenX() + xOffset);
-            setY(event.getScreenY() + yOffset);});
-        root.setOnMouseReleased(event -> root.setCursor(Cursor.DEFAULT));}
+
+        root.setOnMouseDragged(event -> {
+            System.out.println("移动窗体");
+            setX(event.getScreenX() + xOffset);
+            setY(event.getScreenY() + yOffset);
+        });
+
+        root.setOnMouseReleased(event -> root.setCursor(Cursor.DEFAULT));
+    }
 
     /**
      * 初始化页面

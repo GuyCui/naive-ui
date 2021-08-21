@@ -30,7 +30,7 @@
 #operation{-fx-border-color: rgb(180,180,180);
     -fx-border-width: 1px 1px 0 1px;
     -fx-border-radius: 4px 4px 0 0;
-    -fx-background-image: url("/com/example/naiveui/img/system/show.png");
+    -fx-background-image: url("/com/example/login/img/system/show.png");
 }
 
 .close,.close:pressed{
@@ -39,14 +39,14 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: 43px 34px;
     -fx-background-color: transparent;
-    -fx-background-image: url("/com/example/naiveui/img/system/close_0.png");
+    -fx-background-image: url("/com/example/login/img/system/close_0.png");
     -fx-cursor: hand;
     -fx-border-width: 0;
 }
 
 .close:hover{
     -fx-background-color: #f45454;
-    -fx-background-image: url("/com/example/naiveui/img/system/close_1.png");
+    -fx-background-image: url("/com/example/login/img/system/close_1.png");
     -fx-border-width: 1px 1px 0 0;
     -fx-border-color: rgb(180,180,180);
     -fx-border-radius: 2px;
@@ -54,7 +54,7 @@
 
 .close:hover{
     -fx-background-color: #f45454;
-    -fx-background-image: url("/com/example/naiveui/img/system/close_1.png");
+    -fx-background-image: url("/com/example/login/img/system/close_1.png");
     -fx-border-width: 1px 1px 0 0;
     -fx-border-color: rgb(180,180,180);
     -fx-border-radius: 2px;
@@ -66,14 +66,14 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: 43px 34px;
     -fx-background-color: transparent;
-    -fx-background-image: url("/com/example/naiveui/img/system/min_0.png");
+    -fx-background-image: url("/com/example/login/img/system/min_0.png");
     -fx-cursor: hand;
     -fx-border-width: 0;
 }
 
 .min:hover{
     -fx-background-color: derive(#c7c6c6, 10%);
-    -fx-background-image: url("/com/example/naiveui/img/system/min_1.png");
+    -fx-background-image: url("/com/example/login/img/system/min_1.png");
     -fx-border-width: 1px 0 0 0;
     -fx-border-color: rgb(180,180,180);
     -fx-border-radius: 2px;
@@ -85,7 +85,7 @@
     -fx-border-width: 2px;
     -fx-border-color: #f1f1f1;
     -fx-border-radius: 4px;
-    -fx-background-image: url("/com/example/naiveui/img/system/head_default_100.png");
+    -fx-background-image: url("/com/example/login/img/system/head_default_100.png");
 }
 
 .login_button,.login_button:pressed{

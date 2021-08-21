@@ -1,7 +1,7 @@
 package com.example.naiveui;
 
-import com.example.naiveui.view.login.ILoginMethod;
-import com.example.naiveui.view.login.LoginController;
+import com.example.naiveui.view.chat.ChatController;
+import com.example.naiveui.view.chat.IChatMethod;
 import javafx.stage.Stage;
 
 /**
@@ -11,11 +11,21 @@ import javafx.stage.Stage;
  * @apiNote
  */
 public class Application extends javafx.application.Application {
-    @Override
+    /*@Override
     public void start(Stage primaryStage) throws Exception {
         ILoginMethod login = new LoginController((userId, userPassword) -> System.out.println("登陆 userId：" + userId + "userPassword：" + userPassword));
 
         login.doShow();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }*/
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        IChatMethod chat = new ChatController();
+        chat.doShow();
     }
 
     public static void main(String[] args) {

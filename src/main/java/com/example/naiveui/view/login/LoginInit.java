@@ -23,7 +23,7 @@ public abstract class LoginInit extends UIObject {
     /**
      * 在这里我们加载配置元素 login.fxml，初始化窗体的基本信息
      */
-    private static final String RESOURCE_NAME = "/com/example/naiveui/login.fxml";
+    private static final String RESOURCE_NAME = "/com/example/login/login.fxml";
 
     protected ILoginEvent loginEvent;
 
@@ -63,7 +63,7 @@ public abstract class LoginInit extends UIObject {
         initStyle(StageStyle.TRANSPARENT);
         setResizable(false);
         // 最后我们设置了状态栏的图标样式，这里我们设置了模仿微信的样式，颜色略有差异
-        this.getIcons().add(new Image("/com/example/naiveui/img/system/logo.png"));
+        this.getIcons().add(new Image("/com/example/login/img/system/logo.png"));
         obtain();
         initView();
         initEventDefine();
