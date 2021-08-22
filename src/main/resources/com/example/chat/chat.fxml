@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.Pane?>
 <!--
 定义了面板的宽高，prefHeight="820.0" prefWidth="1243.0"，并设置了 CSS 的引用；stylesheets="@css/chat.css"
 在 css 中设置了背景色、边框色，以及四个圆角的大小 4px
@@ -9,10 +6,13 @@
 这里的 @import 是引入外部的 css，以更加方便的编写和控制样式文件
 # 号是 ID，设置 css 文件时候可以使用 #号也可以使用点 .，点是类文件名称，不具备唯一性，例如；#Chat、.Chat
 -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.geometry.Insets?>
 <Pane id="Chat" styleClass="Chat" prefHeight="820.0" prefWidth="1243.0" stylesheets="@css/chat.css"
       xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-
         <!-- 控制栏 -->
         <Pane id="bar" prefHeight="820" prefWidth="76">
             <!-- 头像 -->
@@ -36,10 +36,29 @@
 
     <!-- 组；group_bar_chat -->
     <Pane visible="true" id="group_bar_chat" layoutX="76" layoutY="1" prefWidth="1166" prefHeight="818" style="-fx-background-color:pink;">
+        <children>
+            <!-- 搜索栏 -->
+            <Pane styleClass="search" prefHeight="80" prefWidth="314">
+                <children>
+                    <TextField styleClass="searchInput" layoutX="20" layoutY="30" prefHeight="30" prefWidth="240" promptText="搜索">
+                        <padding>
+                            <Insets left="30"/>
+                        </padding>
+                    </TextField>
+                    <Label styleClass="searchAdd" layoutX="270" layoutY="30" prefHeight="30" prefWidth="30"/>
+                </children>
+            </Pane>
+            <!-- 会话栏 -->
+            <Pane id="talk" layoutY="80" prefHeight="738" prefWidth="314">
+                <children>
+                    <ListView id="talkList" prefHeight="738" prefWidth="314" styleClass="talkListStyle"/>
+                </children>
+            </Pane>
+        </children>
     </Pane>
 
     <!-- 组；group_bar_friend -->
     <Pane visible="false" id="group_bar_friend" layoutX="76" layoutY="1" prefWidth="1166" prefHeight="818" style="-fx-background-color:yellow;">
     </Pane>
-</Pane>
 
+</Pane>
