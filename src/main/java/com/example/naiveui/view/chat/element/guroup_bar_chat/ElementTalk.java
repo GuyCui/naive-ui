@@ -4,10 +4,12 @@ import com.example.naiveui.util.DateUtil;
 import com.example.naiveui.util.Ids;
 import com.example.naiveui.view.chat.data.RemindCount;
 import com.example.naiveui.view.chat.data.TalkBoxData;
+import com.example.naiveui.view.chat.data.TalkData;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 
 import java.util.Date;
@@ -43,6 +45,15 @@ public class ElementTalk {
      * 删除对话框按钮
      */
     private Button delete;
+
+    /**
+     * 初始化填充消息对话框
+     */
+    private ListView<Pane> infoBoxList;
+
+    public ElementTalk(){
+
+    }
 
     public ElementTalk(String talkId, Integer talkType, String talkName, String talkHead, String talkSketch, Date talkDate) {
         pane = new Pane();
@@ -110,8 +121,17 @@ public class ElementTalk {
         delete.getStyleClass().add("element_delete");
         children.add(delete);
 
+        // 消息框[初始化，未装载]，承载对话信息内容，点击按钮时候填充
+        infoBoxList = new ListView<>();
+        infoBoxList.setId(Ids.ElementTalkId.createInfoBoxListId(talkId));
+        infoBoxList.setUserData(new TalkData(talkName, talkHead));
+        infoBoxList.setPrefSize(850, 560);
+        infoBoxList.getStyleClass().add("infoBoxStyle");
     }
 
+    public ListView<Pane> infoBoxList() {
+        return infoBoxList;
+    }
     public Pane pane() {
         return pane;
     }

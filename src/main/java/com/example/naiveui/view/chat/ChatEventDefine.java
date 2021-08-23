@@ -1,18 +1,51 @@
 package com.example.naiveui.view.chat;
 
+import com.example.naiveui.view.chat.data.TalkBoxData;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+
+import java.util.Date;
 
 public class ChatEventDefine {
 
-    private final ChatInit chatInit;
+    private ChatInit chatInit;
+    private IChatEvent chatEvent;
+    private IChatMethod chatMethod;
 
-    public ChatEventDefine(ChatInit chatInit){
+    public ChatEventDefine(ChatInit chatInit, IChatEvent chatEvent, IChatMethod chatMethod){
         this.chatInit = chatInit;
+        this.chatEvent = chatEvent;
+        this.chatMethod = chatMethod;
 
         chatInit.move();
-        this.barChat();
-        this.barFriend();
+        min();               // 最小化
+        quit();              // 退出
+        barChat();           // 聊天
+        barFriend();         // 好友
+        doEventTextSend();   // 发送消息事件[键盘]
+        doEventTouchSend();  // 发送消息事件[按钮]
+    }
+
+
+    // 最小化
+    private void min() {
+        chatInit.$("group_bar_chat_min", Button.class).setOnAction(event -> {
+            chatInit.setIconified(true);
+        });
+    }
+
+    // 退出
+    private void quit() {
+        chatInit.$("group_bar_chat_close", Button.class).setOnAction(event -> {
+            chatInit.close();
+            System.exit(0);
+            System.out.println("退出");
+        });
     }
 
     /**
@@ -86,5 +119,45 @@ public class ChatEventDefine {
                 return;
             }
             bar_friend.setStyle("-fx-background-image: url('/com/example/chat/img/system/friend_0.png')");});
+    }
+
+    /**
+     * 发送消息事件[键盘]
+     */
+    private void doEventTextSend() {
+        TextArea txt_input = chatInit.$("txt_input", TextArea.class);
+        txt_input.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                doEventSendMsg();
+            }
+        });
+    }
+
+    /**
+     * 发送消息事件[按钮]
+     */
+    private void doEventTouchSend() {
+        Label touch_send = chatInit.$("touch_send", Label.class);
+        touch_send.setOnMousePressed(event -> {
+            doEventSendMsg();
+        });
+    }
+
+    private void doEventSendMsg() {
+        TextArea txt_input = chatInit.$("txt_input", TextArea.class);
+        MultipleSelectionModel selectionModel = chatInit.$("talkList", ListView.class).getSelectionModel();
+        Pane selectedItem = (Pane) selectionModel.getSelectedItem();
+        // 对话信息
+        TalkBoxData talkBoxData = (TalkBoxData) selectedItem.getUserData();
+        String msg = txt_input.getText();
+        if (null == msg || "".equals(msg) || "".equals(msg.trim())) {
+            return;
+        }
+        Date msgDate = new Date();
+        // 发送消息
+        System.out.println("发送消息：" + msg);
+        // 发送事件给自己添加消息
+        chatMethod.addTalkMsgRight(talkBoxData.getTalkId(), msg, msgDate, true, true, false);
+        txt_input.clear();
     }
 }
