@@ -72,4 +72,21 @@ public interface IChatMethod {
      */
     void addTalkMsgRight(String talkId, String msg, Date msgData, Boolean idxFirst, Boolean selected, Boolean isRemind);
 
+    /**
+     * 好友列表添加‘群组’
+     *
+     * @param groupId   群组 ID
+     * @param groupName 群组名称
+     * @param groupHead 群组头像
+     */
+    void addFriendGroup(String groupId, String groupName, String groupHead);
+    /**
+     * 好友列表添加‘用户’
+     *
+     * @param selected     选中;true/false
+     * @param userId       好友 ID
+     * @param userNickName 好友昵称
+     * @param userHead     好友头像
+     */
+    void addFriendUser(boolean selected, String userId, String userNickName, String userHead);
 }
