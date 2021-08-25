@@ -43,7 +43,7 @@ public interface IChatMethod {
      * @param selected 是否选中
      * @param isRemind 是否提醒
      */
-    void addTalkMsgUserLeft(String talkId, String msg, Date msgData, Boolean idxFirst, Boolean selected, Boolean isRemind);
+    void addTalkMsgUserLeft(String talkId, String msg, Integer msgType, Date msgData, Boolean idxFirst, Boolean selected, Boolean isRemind);
 
     /**
      * 填充对话框消息-群组[别人的消息]
@@ -58,7 +58,7 @@ public interface IChatMethod {
      * @param selected     是否选中
      * @param isRemind     是否提醒
      */
-    void addTalkMsgGroupLeft(String talkId, String userId, String userNickName, String userHead, String msg, Date msgDate, Boolean idxFirst, Boolean selected, Boolean isRemind);
+    void addTalkMsgGroupLeft(String talkId, String userId, String userNickName, String userHead, String msg, Integer msgType, Date msgDate, Boolean idxFirst, Boolean selected, Boolean isRemind);
 
     /**
      * 填充对话框消息[自己的消息]
@@ -70,7 +70,7 @@ public interface IChatMethod {
      * @param selected 是否选中
      * @param isRemind 是否提醒
      */
-    void addTalkMsgRight(String talkId, String msg, Date msgData, Boolean idxFirst, Boolean selected, Boolean isRemind);
+    void addTalkMsgRight(String talkId, String msg, Integer msgType, Date msgData, Boolean idxFirst, Boolean selected, Boolean isRemind);
 
     /**
      * 好友列表添加‘群组’
@@ -89,4 +89,16 @@ public interface IChatMethod {
      * @param userHead     好友头像
      */
     void addFriendUser(boolean selected, String userId, String userNickName, String userHead);
+
+
+    /**
+     * 工具栏表情框体，位置：X
+     */
+    double getToolFaceX();
+
+    /**
+     * 工具栏表情框体，位置：Y
+     */
+    double getToolFaceY();
+
 }

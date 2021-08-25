@@ -29,7 +29,6 @@ public abstract class UIObject extends Stage {
         });
 
         root.setOnMouseDragged(event -> {
-            System.out.println("移动窗体");
             setX(event.getScreenX() + xOffset);
             setY(event.getScreenY() + yOffset);
         });
@@ -46,4 +45,20 @@ public abstract class UIObject extends Stage {
      * 初始化事件定义
      */
     public abstract void initEventDefine();
+
+    public double x(){
+        return getX();
+    }
+
+    public double y(){
+        return getY();
+    }
+
+    public double width(){
+        return getWidth();
+    }
+    public double height(){
+        return getHeight();
+    }
+
 }

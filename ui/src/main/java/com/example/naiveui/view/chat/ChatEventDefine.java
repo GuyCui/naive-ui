@@ -1,6 +1,7 @@
 package com.example.naiveui.view.chat;
 
 import com.example.naiveui.view.chat.data.TalkBoxData;
+import com.example.naiveui.view.face.FaceController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -29,6 +30,7 @@ public class ChatEventDefine {
         barFriend();         // 好友
         doEventTextSend();   // 发送消息事件[键盘]
         doEventTouchSend();  // 发送消息事件[按钮]
+        doEventToolFace();   // 表情窗体
     }
 
 
@@ -189,9 +191,17 @@ public class ChatEventDefine {
         }
         Date msgDate = new Date();
         // 发送消息
-        chatEvent.doSendMsg(chatInit.userId, talkBoxData.getTalkId(), talkBoxData.getTalkType(), msg, msgDate);
+        chatEvent.doSendMsg(chatInit.userId, talkBoxData.getTalkId(), talkBoxData.getTalkType(), msg, 0, msgDate);
         // 发送事件给自己添加消息
-        chatMethod.addTalkMsgRight(talkBoxData.getTalkId(), msg, msgDate, true, true, false);
+        chatMethod.addTalkMsgRight(talkBoxData.getTalkId(), msg, 0, msgDate, true, true, false);
         txt_input.clear();
+    }
+    // 表情
+    private void doEventToolFace() {
+        FaceController face = new FaceController(chatInit, chatInit, chatEvent, chatMethod);
+        Button tool_face = chatInit.$("tool_face", Button.class);
+        tool_face.setOnMousePressed(event -> {
+            face.doShowFace(chatMethod.getToolFaceX(), chatMethod.getToolFaceY());
+        });
     }
 }

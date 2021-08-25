@@ -1,14 +1,20 @@
 package com.example.naiveui.view.login;
+
+import com.example.naiveui.view.chat.IChatMethod;
+
 /**
  *@author GuyCui
  * @date 2021/8/20
  * @apiNote
  */
 public class LoginController extends LoginInit implements ILoginMethod{
+    private IChatMethod chat;
     private LoginView loginView;
     private LoginEventDefine loginEventDefine;
 
-    public LoginController(ILoginEvent loginEvent) {super(loginEvent);
+    public LoginController(ILoginEvent loginEvent, IChatMethod chat) {
+        super(loginEvent);
+        this.chat = chat;
     }
 
     /**
