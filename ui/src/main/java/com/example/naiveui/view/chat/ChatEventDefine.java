@@ -46,11 +46,13 @@ public class ChatEventDefine {
     // 退出
     private void quit() {
         chatInit.$("group_bar_chat_close", Button.class).setOnAction(event -> {
+            chatEvent.doQuit();
             chatInit.close();
             System.exit(0);
             System.out.println("退出");
         });
         chatInit.$("group_bar_friend_close", Button.class).setOnAction(event -> {
+            chatEvent.doQuit();
             chatInit.close();
             System.exit(0);
         });
@@ -99,7 +101,7 @@ public class ChatEventDefine {
             switchBarChat(chatInit.$("bar_chat", Button.class), chatInit.$("group_bar_chat", Pane.class), true);
             switchBarFriend(chatInit.$("bar_friend", Button.class), chatInit.$("group_bar_friend", Pane.class), false);
             // 3. 事件处理；填充到对话框
-            System.out.println("事件处理；填充到对话框");
+            chatEvent.doEventAddTalkGroup(chatInit.userId, groupId);
         });
     }
     // 好友；开启与好友发送消息 [点击发送消息时候触发 -> 添加到对话框、选中、展示对话列表]
@@ -111,7 +113,7 @@ public class ChatEventDefine {
             switchBarChat(chatInit.$("bar_chat", Button.class), chatInit.$("group_bar_chat", Pane.class), true);
             switchBarFriend(chatInit.$("bar_friend", Button.class), chatInit.$("group_bar_friend", Pane.class), false);
             // 3. 事件处理；填充到对话框
-            System.out.println("事件处理；填充到对话框");
+            chatEvent.doEventAddTalkUser(chatInit.userId, userFriendId);
         });
     }
     /**
@@ -187,7 +189,7 @@ public class ChatEventDefine {
         }
         Date msgDate = new Date();
         // 发送消息
-        System.out.println("发送消息：" + msg);
+        chatEvent.doSendMsg(chatInit.userId, talkBoxData.getTalkId(), talkBoxData.getTalkType(), msg, msgDate);
         // 发送事件给自己添加消息
         chatMethod.addTalkMsgRight(talkBoxData.getTalkId(), msg, msgDate, true, true, false);
         txt_input.clear();

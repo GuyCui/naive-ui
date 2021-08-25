@@ -4,7 +4,6 @@ import com.example.naiveui.view.chat.data.RemindCount;
 import com.example.naiveui.view.chat.data.TalkBoxData;
 import com.example.naiveui.view.chat.element.group_bar_friend.ElementFriendGroupList;
 import com.example.naiveui.view.chat.element.group_bar_friend.ElementFriendLuck;
-import com.example.naiveui.view.chat.element.group_bar_friend.ElementFriendLuckUser;
 import com.example.naiveui.view.chat.element.group_bar_friend.ElementFriendSubscription;
 import com.example.naiveui.view.chat.element.group_bar_friend.ElementFriendTag;
 import com.example.naiveui.view.chat.element.group_bar_friend.ElementFriendUserList;
@@ -45,40 +44,42 @@ public class ChatView {
     private void initAddFriendLuck() {
         ListView<Pane> friendList = chatInit.$("friendList", ListView.class);
         ObservableList<Pane> items = friendList.getItems();
+
         ElementFriendTag elementFriendTag = new ElementFriendTag("新的朋友");
         items.add(elementFriendTag.pane());
+
         ElementFriendLuck element = new ElementFriendLuck();
         Pane pane = element.pane();
         items.add(pane);
 
         // 面板填充和事件
-        pane.setOnMousePressed(event -> {Pane friendLuckPane = element.friendLuckPane();
+        pane.setOnMousePressed(event -> {
+            Pane friendLuckPane = element.friendLuckPane();
             setContentPaneBox("itstack-naive-chat-ui-chat-friend-luck", "新的朋友", friendLuckPane);
             chatInit.clearViewListSelectedAll(chatInit.$("userListView", ListView.class), chatInit.$("groupListView", ListView.class));
             ListView<Pane> listView = element.friendLuckListView();
             listView.getItems().clear();
-            System.out.println("添加好友");
+            chatEvent.addFriendLuck(chatInit.userId, listView);
         });
 
         // 搜索框事件
         TextField friendLuckSearch = element.friendLuckSearch();
 
         // 键盘事件；搜索好友
-        friendLuckSearch.setOnKeyPressed(event -> {if (event.getCode().equals(KeyCode.ENTER)) {String text = friendLuckSearch.getText();
-            if (null == text) {
-                text = "";
+        friendLuckSearch.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                String text = friendLuckSearch.getText();
+                if (null == text) {
+                    text = "";
+                }
+                if (text.length() > 30) {
+                    text = text.substring(0, 30);
+                }
+                text = text.trim();
+                chatEvent.doFriendLuckSearch(chatInit.userId, text);
+                // 搜索清空元素
+                element.friendLuckListView().getItems().clear();
             }
-            if (text.length() > 30) {
-                text = text.substring(0, 30);
-            }
-            text = text.trim();
-            System.out.println("搜搜好友：" + text);
-            // 搜索清空元素
-            element.friendLuckListView().getItems().clear();
-            // 添加朋友
-            element.friendLuckListView().getItems().add(new ElementFriendLuckUser("1000005", "比丘卡", "05_50", 0).pane());
-            element.friendLuckListView().getItems().add(new ElementFriendLuckUser("1000006", "兰兰", "06_50", 1).pane());
-            element.friendLuckListView().getItems().add(new ElementFriendLuckUser("1000007", "Alexa", "07_50", 2).pane());}
         });
     }
 
@@ -145,7 +146,8 @@ public class ChatView {
      * @param selected        是否选中
      * @param isRemind        是否提醒
      */
-    void updateTalkListIdxAndSelected(int talkType, Pane talkElementPane, Label msgRemindLabel, Boolean idxFirst, Boolean selected, Boolean isRemind) {
+    void updateTalkListIdxAndSelected(int talkType, Pane talkElementPane, Label msgRemindLabel, Boolean idxFirst, Boolean selected,
+                                      Boolean isRemind) {
         // 对话框ID、好友ID
         TalkBoxData talkBoxData = (TalkBoxData) talkElementPane.getUserData();
         // 填充到对话框
@@ -168,7 +170,7 @@ public class ChatView {
         if (talkBoxData.getTalkId().equals(((TalkBoxData) firstPane.getUserData()).getTalkId())) {
             Pane selectedItem = talkList.getSelectionModel().getSelectedItem();
             // 选中判断；如果第一个元素已经选中[说明正在会话]，那么清空消息提醒
-            if (null == selectedItem){
+            if (null == selectedItem) {
                 isRemind(msgRemindLabel, talkType, isRemind);
                 return;
             }
