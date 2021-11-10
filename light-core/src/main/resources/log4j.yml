@@ -1,0 +1,7 @@
+log4j:
+    appender:
+        stdout: org.apache.log4j.ConsoleAppender
+        stdout.Target: System.out
+        stdout.layout: org.apache.log4j.PatternLayout
+        stdout.layout.ConversionPattern: '%c %d{ISO8601} -- %p -- %m%n'
+    rootLogger: debug,stdout
