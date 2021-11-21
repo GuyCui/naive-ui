@@ -9,6 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>ui</module>
+        <module>cat-server</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -46,7 +47,6 @@
             <version>1.7.25</version>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>demo</finalName>
         <plugins>
