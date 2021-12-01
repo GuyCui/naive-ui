@@ -12,14 +12,13 @@ import javax.annotation.Resource;
  * @description: TODO 类描述
  * @author: GuyCui
  * @date: 2021/11/30
- **/
+ */
 @RestController
 public class HelloController {
-    @Resource
-    private RestTemplate restTemplate;
+  @Resource private RestTemplate restTemplate;
 
-    @GetMapping("/hello")
-    public String hello () {
-        return restTemplate.getForObject("http://provider/" + "hello", String.class);
-    }
+  @GetMapping("/hello")
+  public String hello() {
+    return restTemplate.getForObject("http://provider/" + "hello", String.class);
+  }
 }
