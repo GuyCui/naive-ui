@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author: GuyCui
  * @date: 2021/12/1
  **/
-@FeignClient(contextId = "feignClient", name = "service-producer", configuration = FeignConfiguration.class)
+@FeignClient(contextId = "feignClient", name = "service-provider", configuration = FeignConfiguration.class)
 public interface MyFeignClient {
     /**
      * 你好
