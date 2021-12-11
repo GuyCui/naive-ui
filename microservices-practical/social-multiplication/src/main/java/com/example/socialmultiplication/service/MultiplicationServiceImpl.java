@@ -3,6 +3,7 @@ package com.example.socialmultiplication.service;
 import com.example.socialmultiplication.doMain.Multiplication;
 import com.example.socialmultiplication.doMain.MultiplicationResultAttempt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @className: MultiplicationServiceImpl
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author: GuyCui
  * @date: 2021/12/8
  **/
+@Service
 public class MultiplicationServiceImpl implements MultiplicationService {
 
     private final RandomGeneratorService randomGeneratorService;
