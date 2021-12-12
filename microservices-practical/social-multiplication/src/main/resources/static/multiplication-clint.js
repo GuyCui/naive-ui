@@ -1,7 +1,7 @@
 function updateMultiplication() {
     $.ajax({
         url: "http://localhost:8080/multiplications/random"
-    }).then(function(data) {
+    }).then(function (data) {
         // Cleans the form
         $("#attempt-form").find("input[name='result-attempt']").val("");
         $("#attempt-form").find("input[name='user-alias']").val("");
@@ -35,6 +35,7 @@ $(document).ready(function () {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            async: false,
             success: function (result) {
                 if (result.correct) {
                     $('.result-message').empty().append("The result is correct! Congratulations!");

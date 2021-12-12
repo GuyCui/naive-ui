@@ -17,28 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
  * @description: TODO 类描述
  * @author: GuyCui
  * @date: 2021/12/10
- **/
+ */
 @RestController
 @RequestMapping("/results")
 public final class MultiplicationResultAttemptController {
 
-    private final MultiplicationService multiplicationService;
+  private final MultiplicationService multiplicationService;
 
-    @Autowired(required = false)
-    public MultiplicationResultAttemptController(MultiplicationService multiplicationService) {
-        this.multiplicationService = multiplicationService;
-    }
+  @Autowired(required = false)
+  public MultiplicationResultAttemptController(MultiplicationService multiplicationService) {
+    this.multiplicationService = multiplicationService;
+  }
 
-    @RequiredArgsConstructor
-    @NoArgsConstructor(force = true)
-    @Getter
-    static final class ResultResponse {
-        private final boolean correct;
-    }
+  @PostMapping
+  ResponseEntity<MultiplicationResultAttempt> postResult(
+      @RequestBody MultiplicationResultAttempt multiplicationResultAttempt) {
+    boolean isCorrect = multiplicationService.checkAttempt(multiplicationResultAttempt);
+    MultiplicationResultAttempt attemptCopy =
+        new MultiplicationResultAttempt(
+            multiplicationResultAttempt.getUser(),
+            multiplicationResultAttempt.getMultiplication(),
+            multiplicationResultAttempt.getResultAttempt(),
+            isCorrect);
+    return ResponseEntity.ok(attemptCopy);
+  }
 
-    @PostMapping
-    ResponseEntity<ResultResponse> postResult(@RequestBody MultiplicationResultAttempt multiplicationResultAttempt) {
-    return ResponseEntity.ok(
-        new ResultResponse(multiplicationService.checkAttempt(multiplicationResultAttempt)));
-    }
+  @RequiredArgsConstructor
+  @NoArgsConstructor(force = true)
+  @Getter
+  static final class ResultResponse {
+    private final boolean correct;
+  }
 }

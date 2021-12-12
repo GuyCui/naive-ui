@@ -27,11 +27,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @WebMvcTest(MultiplicationResultAttemptController.class)
 public class MultiplicationResultAttemptControllerTest {
-  @MockBean
-  private MultiplicationService multiplicationService;
+  @MockBean private MultiplicationService multiplicationService;
 
-  @Autowired
-  private MockMvc mvc;
+  @Autowired private MockMvc mvc;
 
   // 这个对象会被下面的 initFields 方法神奇地初始化。
   private JacksonTester<MultiplicationResultAttempt> jsonResult;
@@ -46,26 +44,43 @@ public class MultiplicationResultAttemptControllerTest {
   public void postResultReturnCorrect() throws Exception {
     genericParameterizedTest(true);
   }
+
   @Test
   public void postResultReturnNotCorrect() throws Exception {
     genericParameterizedTest(false);
   }
 
-  private void genericParameterizedTest(final boolean correct) throws Exception{
+  private void genericParameterizedTest(final boolean correct) throws Exception {
     // given
-    given(multiplicationService.checkAttempt(any(MultiplicationResultAttempt.class))).willReturn(correct);
+    given(multiplicationService.checkAttempt(any(MultiplicationResultAttempt.class)))
+        .willReturn(correct);
 
     User user = new User("Guy");
 
     Multiplication multiplication = new Multiplication(50, 70);
-    MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3500);
+    MultiplicationResultAttempt attempt =
+        new MultiplicationResultAttempt(user, multiplication, 3500, correct);
 
     // when
     MockHttpServletResponse response =
-            mvc.perform(post("/results").contentType(MediaType.APPLICATION_JSON).content(jsonResult.write(attempt).getJson())).andReturn().getResponse();
+        mvc.perform(
+                post("/results")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(jsonResult.write(attempt).getJson()))
+            .andReturn()
+            .getResponse();
 
     // then
     assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-    assertThat(response.getContentAsString()).isEqualTo(jsonResponse.write(new ResultResponse(correct)).getJson());
+    assertThat(response.getContentAsString())
+        .isEqualTo(
+            jsonResult
+                .write(
+                    new MultiplicationResultAttempt(
+                        attempt.getUser(),
+                        attempt.getMultiplication(),
+                        attempt.getResultAttempt(),
+                        correct))
+                .getJson());
   }
 }
