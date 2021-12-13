@@ -7,9 +7,10 @@ import com.example.socialmultiplication.repository.MultiplicationResultAttemptRe
 import com.example.socialmultiplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,6 +48,8 @@ public class MultiplicationServiceImpl implements MultiplicationService {
   public boolean checkAttempt(final MultiplicationResultAttempt resultAttempt) {
 
     Optional<User> user = userRepository.findByAlias(resultAttempt.getUser().getAlias());
+
+    // Avoids 'hack' attempts
     Assert.isTrue(!resultAttempt.isCorrect(), "you can't send an attempt marked as correct!");
 
     // Check if it's correct
@@ -54,7 +57,6 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         resultAttempt.getResultAttempt()
             == resultAttempt.getMultiplication().getFactorA()
                 * resultAttempt.getMultiplication().getFactorB();
-    // Avoids 'hack' attempts
 
     // Creates a copy, now setting the 'correct' field accordingly
     MultiplicationResultAttempt checkedAttempt =
@@ -66,5 +68,15 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     attemptRepository.save(checkedAttempt);
     // Returns the result
     return correct;
+  }
+
+  /**
+   * @author [Cui Guy] @Description: [获得用户的统计数据] @Param [@param userAlias 用户别名] @Return [@return
+   *     {@link List<MultiplicationResultAttempt> }] @Date [2021/12/13]
+   * @update: [序号][2021/12/13] [Cui Guy][变更描述]
+   */
+  @Override
+  public List<MultiplicationResultAttempt> getStatsForUser(String userAlias) {
+    return attemptRepository.findTop5ByUserAliasOrderByIdDesc(userAlias);
   }
 }

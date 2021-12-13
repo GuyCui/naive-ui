@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -28,8 +29,8 @@ public final class Multiplication {
   private final int factorB;
 
   @Id
-  @GeneratedValue
-  @Column(name = "MULTIPLICATION_ID", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "MULTIPLICATION_ID")
   private Long id;
 
   /** Empty constructor for JSON (de)serialization */

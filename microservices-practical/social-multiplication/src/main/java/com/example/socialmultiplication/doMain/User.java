@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -26,8 +27,8 @@ public final class User {
   private final String alias;
 
   @Id
-  @GeneratedValue
-  @Column(name = "USER_ID", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "USER_ID")
   private Long id;
 
   public User() {

@@ -83,4 +83,7 @@ public class MultiplicationResultAttemptControllerTest {
                         correct))
                 .getJson());
   }
+
+  @Test
+  public void getStatistics() {}
 }
