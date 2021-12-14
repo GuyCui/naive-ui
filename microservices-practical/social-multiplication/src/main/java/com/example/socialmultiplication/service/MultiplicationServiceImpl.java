@@ -47,6 +47,7 @@ public class MultiplicationServiceImpl implements MultiplicationService {
   @Transactional
   public boolean checkAttempt(final MultiplicationResultAttempt resultAttempt) {
 
+    // Check if the user already for that attempts
     Optional<User> user = userRepository.findByAlias(resultAttempt.getUser().getAlias());
 
     // Avoids 'hack' attempts
