@@ -3,6 +3,8 @@ package com.example.socialmultiplication.service;
 import com.example.socialmultiplication.doMain.Multiplication;
 import com.example.socialmultiplication.doMain.MultiplicationResultAttempt;
 import com.example.socialmultiplication.doMain.User;
+import com.example.socialmultiplication.event.EventDispatcher;
+import com.example.socialmultiplication.event.MultiplicationSolvedEvent;
 import com.example.socialmultiplication.repository.MultiplicationResultAttemptRepository;
 import com.example.socialmultiplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,18 @@ public class MultiplicationServiceImpl implements MultiplicationService {
   private final RandomGeneratorService randomGeneratorService;
   private final MultiplicationResultAttemptRepository attemptRepository;
   private final UserRepository userRepository;
+  private final EventDispatcher eventDispatcher;
 
   @Autowired
   public MultiplicationServiceImpl(
       final RandomGeneratorService randomGeneratorService,
       final MultiplicationResultAttemptRepository attemptRepository,
-      final UserRepository userRepository) {
+      final UserRepository userRepository,
+      final EventDispatcher eventDispatcher) {
     this.randomGeneratorService = randomGeneratorService;
     this.attemptRepository = attemptRepository;
     this.userRepository = userRepository;
+    this.eventDispatcher = eventDispatcher;
   }
 
   @Override
@@ -66,7 +71,12 @@ public class MultiplicationServiceImpl implements MultiplicationService {
             resultAttempt.getMultiplication(),
             resultAttempt.getResultAttempt(),
             correct);
+    // Stores the attempt
     attemptRepository.save(checkedAttempt);
+    // Communicates the result via Event
+    eventDispatcher.send(
+        new MultiplicationSolvedEvent(
+            checkedAttempt.getId(), checkedAttempt.getUser().getId(), checkedAttempt.isCorrect()));
     // Returns the result
     return correct;
   }
