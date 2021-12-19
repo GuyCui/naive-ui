@@ -17,11 +17,13 @@ public class LeaderBoardServiceImplTest {
 
     private LeaderBoardServiceImpl leaderBoardService;
 
-    @Mock private ScoreCardRepository scoreCardRepository;
+    @Mock
+    private ScoreCardRepository scoreCardRepository;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        leaderBoardService = new LeaderBoardServiceImpl(scoreCardRepository);
     }
 
     @Test
@@ -33,7 +35,7 @@ public class LeaderBoardServiceImplTest {
         given(scoreCardRepository.findFirst10()).willReturn(expectedLeaderBoard);
 
         // when
-        List<LeaderBoardRow> leaderBoard = leaderBoardService.getCurrenLeaderBoard();
+        List<LeaderBoardRow> leaderBoard = leaderBoardService.getCurrentLeaderBoard();
 
         // then
         assertThat(leaderBoard).isEqualTo(expectedLeaderBoard);
