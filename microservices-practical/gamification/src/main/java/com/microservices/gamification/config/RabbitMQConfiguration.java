@@ -25,26 +25,59 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 @Configuration
 public class RabbitMQConfiguration implements RabbitListenerConfigurer {
 
+    /**
+     * 乘法交换
+     *
+     * @param exchange 交换
+     *
+     * @return {@code TopicExchange}
+     */
     @Bean
     public TopicExchange multiplicationExchange(@Value("${multiplication.exchange}") final String exchange) {
         return new TopicExchange(exchange);
     }
 
+    /**
+     * 游戏化队列
+     *
+     * @param queueName 队列名称
+     *
+     * @return {@code Queue}
+     */
     @Bean
-    public Queue gamificationQueue(@Value("${multiplication.queue}") final String queueName) {
+    public Queue gamificationMultiplicationQueue(@Value("${multiplication.queue}") final String queueName) {
         return new Queue(queueName, false);
     }
 
+    /**
+     * 绑定
+     *
+     * @param queue      队列
+     * @param exchange   交换
+     * @param routingKey 路由关键
+     *
+     * @return {@code Binding}
+     */
     @Bean
     Binding binding(final Queue queue, final TopicExchange exchange, @Value("${multiplication.anything.routing key}") final String routingKey) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
+    /**
+     * 映射jackson2消息转换器
+     *
+     * @return {@code MappingJackson2MessageConverter}
+     */
     @Bean
     public MappingJackson2MessageConverter mappingJackson2MessageConverter() {
         return new MappingJackson2MessageConverter();
     }
 
+    /**
+     * 消息处理程序方法工厂
+     *
+     * @return {@code MessageHandlerMethodFactory}
+     */
     @Bean
     public MessageHandlerMethodFactory messageHandlerMethodFactory() {
         DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
@@ -53,6 +86,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
     }
 
     /**
+     * 兔子配置监听器
      * Callback allowing a {@link RabbitListenerEndpointRegistry
      * RabbitListenerEndpointRegistry} and specific {@link RabbitListenerEndpoint
      * RabbitListenerEndpoint} instances to be registered against the given
