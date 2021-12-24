@@ -24,70 +24,72 @@ import java.util.Optional;
 @Service
 public class MultiplicationServiceImpl implements MultiplicationService {
 
-  private final RandomGeneratorService randomGeneratorService;
-  private final MultiplicationResultAttemptRepository attemptRepository;
-  private final UserRepository userRepository;
-  private final EventDispatcher eventDispatcher;
+    private final RandomGeneratorService randomGeneratorService;
+    private final MultiplicationResultAttemptRepository attemptRepository;
+    private final UserRepository userRepository;
+    private final EventDispatcher eventDispatcher;
 
-  @Autowired
-  public MultiplicationServiceImpl(
-      final RandomGeneratorService randomGeneratorService,
-      final MultiplicationResultAttemptRepository attemptRepository,
-      final UserRepository userRepository,
-      final EventDispatcher eventDispatcher) {
-    this.randomGeneratorService = randomGeneratorService;
-    this.attemptRepository = attemptRepository;
-    this.userRepository = userRepository;
-    this.eventDispatcher = eventDispatcher;
-  }
+    @Autowired
+    public MultiplicationServiceImpl(final RandomGeneratorService randomGeneratorService,
+                                     final MultiplicationResultAttemptRepository attemptRepository, final UserRepository userRepository,
+                                     final EventDispatcher eventDispatcher) {
+        this.randomGeneratorService = randomGeneratorService;
+        this.attemptRepository = attemptRepository;
+        this.userRepository = userRepository;
+        this.eventDispatcher = eventDispatcher;
+    }
 
-  @Override
-  public Multiplication createRandomMultiplication() {
-    int factorA = randomGeneratorService.generateRandomFactor();
-    int factorB = randomGeneratorService.generateRandomFactor();
-    return new Multiplication(factorA, factorB);
-  }
+    /**
+     * 通过id获取结果
+     *
+     * @param resultId 结果id
+     *
+     * @return {@code MultiplicationResultAttempt}
+     */
+    @Override
+    public MultiplicationResultAttempt getResultById(final Long resultId) {
+        return attemptRepository.findById(resultId).get();
+    }
 
-  @Override
-  @Transactional
-  public boolean checkAttempt(final MultiplicationResultAttempt resultAttempt) {
+    @Override
+    public Multiplication createRandomMultiplication() {
+        int factorA = randomGeneratorService.generateRandomFactor();
+        int factorB = randomGeneratorService.generateRandomFactor();
+        return new Multiplication(factorA, factorB);
+    }
 
-    // Check if the user already for that attempts
-    Optional<User> user = userRepository.findByAlias(resultAttempt.getUser().getAlias());
+    @Override
+    @Transactional
+    public boolean checkAttempt(final MultiplicationResultAttempt resultAttempt) {
 
-    // Avoids 'hack' attempts
-    Assert.isTrue(!resultAttempt.isCorrect(), "you can't send an attempt marked as correct!");
+        // Check if the user already for that attempts
+        Optional<User> user = userRepository.findByAlias(resultAttempt.getUser().getAlias());
 
-    // Check if it's correct
-    boolean correct =
-        resultAttempt.getResultAttempt()
-            == resultAttempt.getMultiplication().getFactorA()
-                * resultAttempt.getMultiplication().getFactorB();
+        // Avoids 'hack' attempts
+        Assert.isTrue(!resultAttempt.isCorrect(), "you can't send an attempt marked as correct!");
 
-    // Creates a copy, now setting the 'correct' field accordingly
-    MultiplicationResultAttempt checkedAttempt =
-        new MultiplicationResultAttempt(
-            resultAttempt.getUser(),
-            resultAttempt.getMultiplication(),
-            resultAttempt.getResultAttempt(),
-            correct);
-    // Stores the attempt
-    attemptRepository.save(checkedAttempt);
-    // Communicates the result via Event
-    eventDispatcher.send(
-        new MultiplicationSolvedEvent(
-            checkedAttempt.getId(), checkedAttempt.getUser().getId(), checkedAttempt.isCorrect()));
-    // Returns the result
-    return correct;
-  }
+        // Check if it's correct
+        boolean correct =
+                resultAttempt.getResultAttempt() == resultAttempt.getMultiplication().getFactorA() * resultAttempt.getMultiplication().getFactorB();
 
-  /**
-   * @author [Cui Guy] @Description: [获得用户的统计数据] @Param [@param userAlias 用户别名] @Return [@return
-   *     {@link List<MultiplicationResultAttempt> }] @Date [2021/12/13]
-   * @update: [序号][2021/12/13] [Cui Guy][变更描述]
-   */
-  @Override
-  public List<MultiplicationResultAttempt> getStatsForUser(String userAlias) {
-    return attemptRepository.findTop5ByUserAliasOrderByIdDesc(userAlias);
-  }
+        // Creates a copy, now setting the 'correct' field accordingly
+        MultiplicationResultAttempt checkedAttempt = new MultiplicationResultAttempt(resultAttempt.getUser(), resultAttempt.getMultiplication(),
+                resultAttempt.getResultAttempt(), correct);
+        // Stores the attempt
+        attemptRepository.save(checkedAttempt);
+        // Communicates the result via Event
+        eventDispatcher.send(new MultiplicationSolvedEvent(checkedAttempt.getId(), checkedAttempt.getUser().getId(), checkedAttempt.isCorrect()));
+        // Returns the result
+        return correct;
+    }
+
+    /**
+     * @author [Cui Guy] @Description: [获得用户的统计数据] @Param [@param userAlias 用户别名] @Return [@return
+     * {@link List<MultiplicationResultAttempt> }] @Date [2021/12/13]
+     * @update: [序号][2021/12/13] [Cui Guy][变更描述]
+     */
+    @Override
+    public List<MultiplicationResultAttempt> getStatsForUser(String userAlias) {
+        return attemptRepository.findTop5ByUserAliasOrderByIdDesc(userAlias);
+    }
 }
