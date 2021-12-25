@@ -29,6 +29,14 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     private final UserRepository userRepository;
     private final EventDispatcher eventDispatcher;
 
+    /**
+     * 乘法服务impl
+     *
+     * @param randomGeneratorService 随机发生器服务
+     * @param attemptRepository      尝试存储库
+     * @param userRepository         用户存储库
+     * @param eventDispatcher        事件调度器
+     */
     @Autowired
     public MultiplicationServiceImpl(final RandomGeneratorService randomGeneratorService,
                                      final MultiplicationResultAttemptRepository attemptRepository, final UserRepository userRepository,
