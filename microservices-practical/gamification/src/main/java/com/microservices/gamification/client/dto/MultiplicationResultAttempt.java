@@ -1,6 +1,7 @@
 package com.microservices.gamification.client.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.microservices.gamification.client.MultiplicationResultAttemptDeserializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
