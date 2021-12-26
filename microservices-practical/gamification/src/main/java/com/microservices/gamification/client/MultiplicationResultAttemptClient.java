@@ -20,5 +20,5 @@ public interface MultiplicationResultAttemptClient {
      *
      * @return {@code MultiplicationResultAttempt}
      */
-    MultiplicationResultAttempt retrieveMultiplicationTesultAttemptById(final Long multiplicationId);
+    MultiplicationResultAttempt retrieveMultiplicationResultAttemptById(final Long multiplicationId);
 }
