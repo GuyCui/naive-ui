@@ -1,5 +1,7 @@
 package com.microservices.gamification.service;
 
+import com.microservices.gamification.client.MultiplicationResultAttemptClient;
+import com.microservices.gamification.client.dto.MultiplicationResultAttempt;
 import com.microservices.gamification.domain.Badge;
 import com.microservices.gamification.domain.BadgeCard;
 import com.microservices.gamification.domain.GameStats;
@@ -22,12 +24,17 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class GameServiceImpl implements GameService {
+
+    public static final int LUCKY_NUMBER = 42;
     private final ScoreCardRepository scoreCardRepository;
     private final BadgeCardRepository badgeCardRepository;
+    private MultiplicationResultAttemptClient attemptClient;
 
-    GameServiceImpl(ScoreCardRepository scoreCardRepository, BadgeCardRepository badgeCardRepository) {
+    GameServiceImpl(ScoreCardRepository scoreCardRepository, BadgeCardRepository badgeCardRepository,
+                    MultiplicationResultAttemptClient attemptClient) {
         this.scoreCardRepository = scoreCardRepository;
         this.badgeCardRepository = badgeCardRepository;
+        this.attemptClient = attemptClient;
     }
 
     /**
@@ -80,6 +87,12 @@ public class GameServiceImpl implements GameService {
 
         List<ScoreCard> scoreCardList = scoreCardRepository.findByUserIdOrderByScoreTimestampDesc(userId);
         List<BadgeCard> badgeCardList = badgeCardRepository.findByUserIdOrderByBadgeTimestampDesc(userId);
+
+        MultiplicationResultAttempt attempt = attemptClient.retrieveMultiplicationResultAttemptById(attemptId);
+        if (!containsBadge(badgeCardList, Badge.BRONZE_MULTIPLICATOR) && (LUCKY_NUMBER == attempt.getMultiplicationFactorA() || LUCKY_NUMBER == attempt.getMultiplicationFactorB())) {
+            BadgeCard luckyBadgeCard = giveBadgeToUser(Badge.BRONZE_MULTIPLICATOR, userId);
+            badgeCards.add(luckyBadgeCard);
+        }
 
         // 根据分数获得徽章
         checkAndGiveBadgeBasedOnScore(badgeCardList, Badge.BRONZE_MULTIPLICATOR, totalScore, 100, userId).ifPresent(badgeCards :: add);

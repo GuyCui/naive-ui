@@ -2,6 +2,7 @@ package com.microservices.gamification.service;
 
 import com.microservices.gamification.domain.LeaderBoardRow;
 import com.microservices.gamification.repository.ScoreCardRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  *
  * @author Guy Cui
  */
+@Slf4j
 @Service
 public class LeaderBoardServiceImpl implements LeaderBoardService {
     private final ScoreCardRepository scoreCardRepository;

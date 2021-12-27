@@ -1,5 +1,6 @@
 package com.microservices.gamification.service;
 
+import com.microservices.gamification.client.MultiplicationResultAttemptClient;
 import com.microservices.gamification.domain.Badge;
 import com.microservices.gamification.domain.BadgeCard;
 import com.microservices.gamification.domain.GameStats;
@@ -25,13 +26,13 @@ public class GameServiceImplTest {
     @Mock
     private BadgeCardRepository badgeCardRepository;
 
-    //@Mock
-    //private MultiplicationResultAttemptClient multiplicationClient;
+    @Mock
+    private MultiplicationResultAttemptClient attemptClient;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        gameService = new GameServiceImpl(scoreCardRepository, badgeCardRepository);
+        gameService = new GameServiceImpl(scoreCardRepository, badgeCardRepository, attemptClient);
 
 
     }
