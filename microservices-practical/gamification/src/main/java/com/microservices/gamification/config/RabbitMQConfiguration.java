@@ -5,6 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpoint;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
@@ -24,6 +25,21 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
  **/
 @Configuration
 public class RabbitMQConfiguration implements RabbitListenerConfigurer {
+
+    @Bean
+    public org.springframework.amqp.rabbit.connection.ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        //设置服务地址
+        connectionFactory.setHost("82.156.68.175");
+        //端口
+        connectionFactory.setPort(5672);
+        //设置账号信息，用户名、密码、vhost
+        //connectionFactory.setVirtualHost("testhost");
+        connectionFactory.setUsername("admin");
+        connectionFactory.setPassword("admin");
+
+        return connectionFactory;
+    }
 
     /**
      * 乘法交换
@@ -59,7 +75,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
      * @return {@code Binding}
      */
     @Bean
-    Binding binding(final Queue queue, final TopicExchange exchange, @Value("${multiplication.anything.routing key}") final String routingKey) {
+    Binding binding(final Queue queue, final TopicExchange exchange, @Value("${multiplication.anything.routing-key}") final String routingKey) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 

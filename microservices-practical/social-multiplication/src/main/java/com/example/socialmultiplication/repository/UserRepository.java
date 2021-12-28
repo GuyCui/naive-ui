@@ -12,11 +12,13 @@ import java.util.Optional;
  */
 public interface UserRepository extends CrudRepository<User, Long> {
 
-  /**
-   * 找到的别名
-   *
-   * @param alias 别名
-   * @return {@link Optional}<{@link User}>
-   */
-  Optional<User> findByAlias(final String alias);
+    /**
+     * 找到别名
+     * 找到的别名
+     *
+     * @param alias 别名
+     *
+     * @return {@code Optional<User>}
+     */
+    Optional<User> findByAlias(final String alias);
 }

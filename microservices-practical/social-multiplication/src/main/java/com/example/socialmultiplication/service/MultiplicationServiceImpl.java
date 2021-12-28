@@ -66,6 +66,13 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         return new Multiplication(factorA, factorB);
     }
 
+    /**
+     * 检查尝试
+     *
+     * @param resultAttempt 结果尝试
+     *
+     * @return boolean
+     */
     @Override
     @Transactional
     public boolean checkAttempt(final MultiplicationResultAttempt resultAttempt) {
