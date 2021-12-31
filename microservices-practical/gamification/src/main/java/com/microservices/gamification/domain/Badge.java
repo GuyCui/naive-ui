@@ -6,8 +6,29 @@ package com.microservices.gamification.domain;
  * @author Guy Cui
  */
 public enum Badge {
-    BRONZE_MULTIPLICATOR, SILVER_MULTIPLICATOR, GOLD_MULTIPLICATOR,
+    /**
+     * 青铜乘数
+     */
+    BRONZE_MULTIPLICATOR,
+    /**
+     * 银乘数
+     */
+    SILVER_MULTIPLICATOR,
+    /**
+     * 黄金乘数
+     */
+    GOLD_MULTIPLICATOR,
 
-    // other badges won for different conditions
-    FIRST_ATTEMPT, FIRST_WON, LUCKY_NUMBER
+    /**
+     * 第一次尝试
+     */// other badges won for different conditions
+    FIRST_ATTEMPT,
+    /**
+     * 第一次赢了
+     */
+    FIRST_WON,
+    /**
+     * 幸运数字
+     */
+    LUCKY_NUMBER
 }
