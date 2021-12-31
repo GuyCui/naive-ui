@@ -9,9 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 与某个特定用户关联的徽章，用户在特定时间赢取它
+ *
  * @author Guy Cui
  */
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ import javax.persistence.Id;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Table(name = "BADGE_CARD")
 public final class BadgeCard {
     @Id
     @GeneratedValue
