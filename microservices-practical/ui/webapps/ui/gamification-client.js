@@ -1,3 +1,4 @@
+var SERVER_URL = "http://localhost:8000/api";
 function updateLeaderBoard() {
     $.ajax({
         url: "http://localhost:8081/leaders"

@@ -1,3 +1,4 @@
+var SERVER_URL = "http://localhost:8000/api";
 function updateMultiplication() {
     $.ajax({
         url: "http://localhost:8018/multiplications/random"
